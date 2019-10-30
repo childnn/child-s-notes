@@ -172,6 +172,14 @@
  *  6. 删除 dev 分支
  *    $ git branch -d dev
  *     删除后, 查看当前分支 git branch, 就只有 master 分支了
+    7. 关联本地分支与远程分支.
+      $ git branch --set-upstream-to=<name>/<remote_branch>  <your_branch>
+      <name>: 名称 eg, origin 或者自定义的名称(id).
+      <remote_branch>: 远程分支.
+      <your_branch>: 需要关联远程的本地分支
+    8. push 本地分支到远程指定的分支(远程分支可以不存在, 该命令可以在远程创建新分支)
+     git push <name> localBranchName:remoteBranchName
+     git push <remote name,一般就是 origin> <本地分支名>:<远程分支名>
  *
  *  当 不同的分支对同一文件做了修改,且都 commit 到本地库后
  *  再执行 $ git merge 分支名 命令时, 会出现 合并冲突
@@ -279,8 +287,11 @@
  *    推送远程库:
  *     $ git push github master
  *     $ git push gitee master
-     4. 重命名:
+     4. 重命名远程地址名称(就是和远程 git 地址关联的唯一名称): -- 一个 git 本地仓库可以关联多个远程库
         $ git remote rename <old> <new>
+     5. $ git remote           # 类似 $ git branch 命令, 查看当前关联的远程地址名称.
+       # 也是类似 $ git remote -v 命令.
+
  *
  * ---------------------------------------------------------------------------------------------------------------------
  *
