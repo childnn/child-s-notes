@@ -3,6 +3,11 @@ HELP.md
 # 行首加 ! 表示不忽略
 **/.mvn/
 #**/test/
+mvnw
+mvnw.cmd
+
+
+
 
 ### STS ###
 .apt_generated
