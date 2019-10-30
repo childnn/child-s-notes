@@ -1,7 +1,7 @@
 HELP.md
 **/target/
 # 行首加 ! 表示不忽略
-**/.mvn/wrapper/maven-wrapper.jar
+**/.mvn/
 #**/test/
 
 ### STS ###
