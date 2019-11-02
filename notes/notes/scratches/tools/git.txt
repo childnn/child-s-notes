@@ -289,6 +289,12 @@
  *     $ git push gitee master
      4. 重命名远程地址名称(就是和远程 git 地址关联的唯一名称): -- 一个 git 本地仓库可以关联多个远程库
         $ git remote rename <old> <new>
+        重命名本地分支
+        $ git branch -m <old-branch> <new-branch>
+        重命名远程分支: 先删除远程分支, 再新建分支.
+        $ git push --delete <remote_name> <remote_branch_name>      # 删除远程分支.
+        $ git branch -m <old_local_branch> <new_local_branch>       # 重命名本地分支.
+        $ git push <remote_name> <branch_name>
      5. $ git remote           # 类似 $ git branch 命令, 查看当前关联的远程地址名称.
        # 也是类似 $ git remote -v 命令.
 
