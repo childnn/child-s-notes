@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * ~~ Talk is cheap. Show me the code. ~~ :)
@@ -32,7 +33,13 @@ public class MailRedisController {
     public String send(String receiver) {
         String verifyCode = String.valueOf(new Random().nextInt(899999) + 100000);
         System.out.println("verifyCode = " + verifyCode);
-        stringRedisTemplate.opsForValue().set(receiver, verifyCode);
+
+        stringRedisTemplate.opsForValue().set(receiver, verifyCode, 1L, TimeUnit.MINUTES);
+
+        /*stringRedisTemplate.opsForValue().set(receiver, verifyCode);
+        stringRedisTemplate.expire(receiver, 1L, TimeUnit.MINUTES);*/
+
+
         return "ookkkkkkkk";
     }
 

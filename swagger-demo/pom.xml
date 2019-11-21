@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>demo</name>
+    <name>swagger-demo</name>
     <description>swagger-demo</description>
 
 
@@ -20,6 +20,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
     </properties>
+
     <dependencies>
         <!--<dependency>-->
             <!--<groupId>io.springfox</groupId>-->

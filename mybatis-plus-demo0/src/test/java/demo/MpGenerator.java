@@ -80,7 +80,7 @@ public class MpGenerator {
         dsc.setPassword("lipeng632930871");
         // dsc.setPassword("NSagd$wynb1^$");
         // dsc.setUrl("jdbc:mysql://rm-8vbk210w6ef0q7ne3qo.mysql.zhangbei.rds.aliyuncs.com:3306/global_voyage_center?characterEncoding=utf8&useSSL=false");
-        dsc.setUrl("jdbc:mysql://120.78.70.187:3306/global_voyage_center?characterEncoding=utf8&useSSL=false");
+        dsc.setUrl("jdbc:mysql://120.78.70.187:3306/elephant_car_center?characterEncoding=utf8&useSSL=false");
 //        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/global_voyage_center?characterEncoding=utf8&useSSL=false");
 
         generator.setDataSource(dsc); // 封装
@@ -95,7 +95,7 @@ public class MpGenerator {
         // include 属性就是用来设置待生成实体类的表名
         //--------------------------------------------------
 
-        strategy.setInclude("user_book_fixed");
+        strategy.setInclude("elephant_vip_card");
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");
@@ -121,14 +121,14 @@ public class MpGenerator {
 
         // 包配置
         PackageConfig pc = new PackageConfig();
-        pc.setParent("com.xq.live.globalVoyage");
+        pc.setParent("com.xq.live.elephantCar");
 //        pc.setModuleName("warrior");
-        pc.setController("controller.user");
-        pc.setEntity("entity.user");
-        pc.setMapper("dao.user");
-        pc.setService("service.user");
-        pc.setServiceImpl("service.impl.user");
-        pc.setXml("mapper.user");
+        pc.setController("controller");
+        pc.setEntity("entity");
+        pc.setMapper("dao");
+        pc.setService("service");
+        pc.setServiceImpl("service.impl");
+        pc.setXml("mapper");
 
         generator.setPackageInfo(pc); // 封装
 

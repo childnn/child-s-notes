@@ -39,6 +39,12 @@ public class StreamTest {
     public void test2() {
         Stream<String[]> stream = Stream.of("1,2,3").map(s -> s.split(","));
         // List<String[]> collect = stream.collect(Collectors.toList());
+        /*stream.flatMap(new Function<String[], Stream<?>>() {
+            @Override
+            public Stream<?> apply(String[] strings) {
+                return Arrays.stream(strings);
+            }
+        });*/
         Stream<String> stream1 = stream.flatMap(Arrays::stream);
         String collect = stream1.collect(Collectors.joining("-", "'", "'"));
         System.out.println(collect);
@@ -64,8 +70,33 @@ public class StreamTest {
 
     @Test
     public void test6() {
-        Set<Integer> collect = Stream.of(1, 2, 3, 4, 5).collect(Collectors.toSet());
-        System.out.println("collect = " + collect.getClass());
+        @SuppressWarnings("serial")
+        List<Student> list = new ArrayList<Student>(){{
+            add(new Student().setAge(1).setName("jack"));
+            add(new Student().setAge(2).setName("jack"));
+            add(new Student().setAge(2).setName("jack"));
+            add(new Student().setAge(4).setName("jack"));
+            add(new Student().setAge(4).setName("jack"));
+            add(new Student().setAge(1).setName("jack"));
+        }};
+        IntStream intStream = list.stream().mapToInt(Student::getAge);
+
+        /*IntStream intStream = list.stream().mapToInt(new ToIntFunction<Student>() {
+            @Override
+            public int applyAsInt(Student value) {
+                return value.getAge();
+            }
+
+        });*/
+//        Stream<Integer> boxed = intStream.boxed(); // 装箱.
+        /*OptionalInt any = intStream.findAny();
+        if (any.isPresent()) {
+            int asInt = any.getAsInt();
+            System.out.println("asInt = " + asInt);
+        }*/
+        OptionalInt first = intStream.findFirst();
+        first.ifPresent(System.err::println);
+
     }
 
 
@@ -84,35 +115,7 @@ public class StreamTest {
         Map<Integer, List<Student>> collect = list.stream().collect(Collectors.groupingBy(Student::getAge));
         System.out.println("collect = " + collect);
     }
-    @Test
-    public void test8() {
-        @SuppressWarnings("serial")
-        List<Student> list = new ArrayList<Student>(){{
-            add(new Student().setAge(1).setName("jack"));
-            add(new Student().setAge(2).setName("jack"));
-            add(new Student().setAge(2).setName("rose"));
-            add(new Student().setAge(4).setName("tom"));
-            add(new Student().setAge(4).setName("tom"));
-            add(new Student().setAge(1).setName("tom"));
-        }};
-        Map<String, List<Student>> collect = list.stream().collect(Collectors.groupingBy(Student::getName));
-        System.out.println("collect = " + collect);
-    }
 
-    // 分区: 是/否
-    @Test
-    public void test9() {
-        @SuppressWarnings("serial")
-        List<Student> list = new ArrayList<Student>(){{
-            add(new Student().setAge(1).setName("jack"));
-            add(new Student().setAge(2).setName("jack"));
-            add(new Student().setAge(2).setName("rose"));
-            add(new Student().setAge(4).setName("tom"));
-            add(new Student().setAge(4).setName("tom"));
-            add(new Student().setAge(10).setName("tom"));
-        }};
-        Map<Boolean, List<Student>> collect = list.stream().collect(Collectors.partitioningBy(s -> s.getAge() > 5));
-        System.out.println("collect = " + collect);
-    }
+
 
 }

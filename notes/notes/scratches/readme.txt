@@ -1,3 +1,6 @@
+Don't Repeat Yourself. DRY 原则, 避免出现重复的代码.
+
+
 URL: uniform resources locator
 URI: uniform resources identifier
 IP: internet protocol
