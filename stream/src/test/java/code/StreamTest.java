@@ -31,6 +31,7 @@ public class StreamTest {
     public void test1() {
         Stream<Integer> stream = Stream.of("java", "jack", "map", "stream")
                 .map(String::length); // 计算 string 长度, 转换 stream. -- 映射.
+        System.out.println("stream = " + stream);
         List<Integer> list = stream.collect(Collectors.toList());
         System.out.println("list = " + list);
     }
