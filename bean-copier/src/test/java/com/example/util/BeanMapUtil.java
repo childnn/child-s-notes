@@ -1,6 +1,6 @@
 package com.example.util;
 
-import org.springframework.cglib.beans.BeanMap;
+import net.sf.cglib.beans.BeanMap;
 
 import java.util.HashMap;
 import java.util.Map;

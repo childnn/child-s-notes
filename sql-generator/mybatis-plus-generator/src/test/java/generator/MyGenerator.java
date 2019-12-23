@@ -14,7 +14,7 @@ import java.util.List;
  * 2019/8/1 0:18
  * 实现成功!
  * 说明：
- * 1. 修改代码生成路径 {@link #dirPath}
+ * 1. 修改代码生成路径 {@link #DIR_PATH}
  * 2. 修改作者 {@link GlobalConfig#getAuthor()}
  * 3. 修改包名
  * 4. 修改数据库连接信: url, username, password
@@ -23,7 +23,8 @@ import java.util.List;
 public class MyGenerator {
 
     // 代码生成路径: 这里如果用 单反斜杠, 会报错误提示, 但是不影响结果
-    private final static String dirPath = "sql-generator/mybatis-plus-generator\\src\\main\\java";
+    private final static String DIR_PATH = "sql-generator/mybatis-plus-generator\\src\\main\\java";
+    private final static String AUTHOR = "MiaoOne";
 
     /**
      * <p>
@@ -37,8 +38,8 @@ public class MyGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir(dirPath);
-        gc.setAuthor("XIAFANG"); // 作者注释
+        gc.setOutputDir(DIR_PATH);
+        gc.setAuthor(AUTHOR); // 作者注释
         gc.setFileOverride(true);  // 是否覆盖
         /**
          * 实体类实现 {@link Model} 抽象类, 直接使用其中基本的 CRUD 方法
@@ -80,7 +81,7 @@ public class MyGenerator {
         dsc.setPassword("lipeng632930871");
         // dsc.setPassword("NSagd$wynb1^$");
         // dsc.setUrl("jdbc:mysql://rm-8vbk210w6ef0q7ne3qo.mysql.zhangbei.rds.aliyuncs.com:3306/global_voyage_center?characterEncoding=utf8&useSSL=false");
-        dsc.setUrl("jdbc:mysql://120.78.70.187:3306/beverage_center?characterEncoding=utf8&useSSL=false");
+        dsc.setUrl("jdbc:mysql://120.78.70.187:3306/upush_center?characterEncoding=utf8&useSSL=false");
 //        dsc.setUrl("jdbc:mysql://120.78.70.187:3306/elephant_car_center?characterEncoding=utf8&useSSL=false");
 //        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/global_voyage_center?characterEncoding=utf8&useSSL=false");
 
@@ -96,7 +97,7 @@ public class MyGenerator {
         // include 属性就是用来设置待生成实体类的表名
         //--------------------------------------------------
 
-        strategy.setInclude("bill_pay_info");
+        strategy.setInclude("upload_attachment");
         // strategy.setExclude(new String[]{"test"}); // 排除生成的表
         // 自定义实体父类
         // strategy.setSuperEntityClass("com.baomidou.demo.TestEntity");

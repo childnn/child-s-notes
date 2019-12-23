@@ -4,6 +4,9 @@ CMD运行rabbitmqctl status检测是否安装成功
 rabbitmq-plugins enable rabbitmq_management 启动
 rabbitmq-plugins disable rabbitmq_management 关闭
 
+延时插件: 把插件放在 plugins 目录.
+rabbitmq-plugins enable rabbitmq_delayed_message_exchange
+
 创建用户:
   $ ./rabbitmqctl add_user [username] [password]
 删除用户:

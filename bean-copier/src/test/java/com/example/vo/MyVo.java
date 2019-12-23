@@ -11,7 +11,7 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class MyVo {
-    private Integer id;
+    private int id;
     private String name;
     private String date;
 }

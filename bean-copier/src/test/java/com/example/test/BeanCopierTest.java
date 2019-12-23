@@ -2,14 +2,18 @@ package com.example.test;
 
 import com.alibaba.fastjson.JSON;
 import com.example.bo.MyBo;
+import com.example.common.BaseVo;
+import com.example.convert.MyConvert;
 import com.example.vo.MyVo;
+import net.sf.cglib.beans.BeanCopier;
+import net.sf.cglib.core.ReflectUtils;
 import org.junit.Test;
-import org.springframework.cglib.beans.BeanCopier;
-import org.springframework.cglib.core.Converter;
 
+import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -21,20 +25,43 @@ import java.util.List;
 public class BeanCopierTest {
 
     @Test
+    public void test0() {
+        int modifiers = BeanCopierTest.class.getModifiers();
+        int i = Modifier.classModifiers();
+        System.out.println("i = " + i);
+        boolean b = Object.class.isAssignableFrom(MyBo.class); // class.
+        if (new MyBo() instanceof BaseVo) { // 对象.
+
+        }
+        System.out.println("b = " + b);
+    }
+
+    @Test
     public void test() {
-        MyVo vo = new MyVo().setId(1).setName("jack");
+        MyVo vo = new MyVo().setId(1).setName("jack").setDate("2019-12-12");
         MyBo bo = new MyBo();
         BeanCopier beanCopier = BeanCopier.create(vo.getClass(), bo.getClass(), true);
-        beanCopier.copy(vo, bo, new Converter() {
-            @Override
-            public Object convert(Object o, Class aClass, Object o1) {
-                System.out.println("o = " + o);
-                System.out.println("aClass = " + aClass);
-                System.out.println("o1 = " + o1);
-                return null;
-            }
-        });
+        beanCopier.copy(vo, bo, new MyConvert());
         System.out.println(bo);
+    }
+
+    public static void main(String[] args) {
+        PropertyDescriptor[] beanGetters = ReflectUtils.getBeanGetters(MyVo.class);
+        for (PropertyDescriptor beanGetter : beanGetters) {
+            System.out.println("beanGetter = " + beanGetter);
+        }
+        System.out.println();
+
+        PropertyDescriptor[] beanSetters = ReflectUtils.getBeanSetters(MyBo.class);
+        for (PropertyDescriptor beanSetter : beanSetters) {
+            System.out.println("beanSetter = " + beanSetter);
+        }
+        System.out.println();
+
+        PropertyDescriptor[] beanGetters1 = ReflectUtils.getBeanGetters(MyBo.class);
+        for (PropertyDescriptor propertyDescriptor : beanGetters1) {
+            System.out.println(propertyDescriptor);
+        }
 
     }
 

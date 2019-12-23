@@ -11,6 +11,7 @@
     <modules>
         <module>mybatis-plus-generator</module>
         <module>mybatis-generator</module>
+        <module>mybatis-dsc-generator</module>
     </modules>
 
     <properties>
