@@ -3,7 +3,12 @@ package test.emoji;
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.codec.binary.Base64;
 import org.junit.Test;
+import org.springframework.web.util.HtmlUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 /**
@@ -19,6 +24,27 @@ public class EmojiTest {
         System.out.println(s);
         String s1 = EmojiParser.parseToAliases("😀");
         System.out.println("s1 = " + s1);
+        String s2 = EmojiParser.parseToUnicode("😀秋香");
+        System.out.println("s2 = " + s2);
+        String s3 = EmojiParser.parseToHtmlDecimal("😀秋香");
+        System.out.println("s3 = " + s3);
+        String s7 = EmojiParser.parseToHtmlHexadecimal("😀");
+        System.out.println("s7 = " + s7);
+
+
+        String s5 = HtmlUtils.htmlEscape("😀秋香", StandardCharsets.UTF_8.name());
+        System.out.println("s5 = " + s5);
+        String s4 = HtmlUtils.htmlUnescape(s7);
+        System.out.println("s4 = " + s4);
+    }
+
+    @Test
+    public void test3() throws UnsupportedEncodingException {
+        String encode = URLEncoder.encode("😀", StandardCharsets.UTF_8.name());
+        System.out.println("encode = " + encode);
+        String decode = URLDecoder.decode(encode, StandardCharsets.UTF_8.name());
+        System.out.println("decode = " + decode);
+
     }
 
     @Test

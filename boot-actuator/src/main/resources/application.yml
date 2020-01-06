@@ -16,9 +16,17 @@ management:
       exposure:
         include: '*'  # 默认只开放, info 节点, "*"
 
+spring:
+  security:
+    user:
+      name: child # 默认 user.
+#      password: child  # 不设值就自动生成 UUID.
+
 server:
   port: 9000
 
 logging:
   level:
-    - info
+    root: info
+
+

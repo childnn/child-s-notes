@@ -24,7 +24,7 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-    ---
+    #---
     # 配置文件的方式操作 mybatis
     #mybatis:
     #  config-location: classpath:mybatis-config.xml     # mybatis-config.xml 核心配置路径

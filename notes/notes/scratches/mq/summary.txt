@@ -48,21 +48,46 @@ IM 只支持 一对一通信, 而 AMQP 消息支持 一对多的广播方式进�
     RabbitMQ 可以看作是 软件的路由器.
 ---
 队列:
-  -- AMQP 消息路由必须有三部分: 交换机、队列和绑定.
-    生产者把消息发布到交换机上, 消息最终到达队列, 并被消费者接收, 绑定决定了消息如何从路由器路由到特定的队列.
+  -- AMQP 消息路由必须有三部分: 交换机(exchanges)、队列(queues)和绑定(bindings).
+    publisher 把消息发布到 exchange 上, 消息最终到达 queue, 并被 consumer 接收
+    (a consumer pulls messages from a queue (or the queue pushes them to the consumer depending on the configuration)),
+    binding 决定了消息如何从路由器路由到特定的队列.
     当你想要将消息投递到队列时, 你通过把消息发送给交换器来完成. 然后, 根据确定的规则, RabbitMQ 将会决定消息
-    该投递到哪个队列. 这些规则被称作 路由键(routing key). 队列通过路由键绑定到交换器. 当你把消息发送到代理服务器时,
+    该投递到哪个队列. 这些规则被称作 路由键(routing key). 队列通过 路由键 绑定到 交换器. 当你把消息发送到代理服务器时,
     消息将拥有一个路由键--即便是空的--RabbitMQ 也会将其和绑定使用的路由建进行匹配. 如果相匹配的话, 那么消息将会
     投递到该队列. 如果路由的消息不匹配任何绑定模式的话, 消息将进入 "黑洞".
-四种交换器:
-   1. direct(一对一(指定 队列名): binding key 与 routing key 完全匹配): 包含一个 空白字符串 名称的 默认交换器. 当声明一个队列时, 它会自动绑定到默认交换器, 并以队列名称作为 路由键.
+    how do publishers and consumers discover each other?
+        Via the name of the exchange. Usually, either the publisher or consumer creates the exchange with a given name and then makes that name public.
+    How are the messages routed from the exchange to the queue?
+        Good question. First, the queue has to be attached to the given exchange.  队列关联到交换器上.
+        Typically, a consumer creates a queue and attaches it to an exchange at the same time. 消费者创建队列并将其关联到交换器上.
+        Second, messages received by the exchange have to be matched to the queue - a process called "binding".
+           -- 被交换器接收的消息需要与队列匹配--此过程被称为 绑定.
+        To understand binding, it's useful to understand the structure of an AMQP message:
+            -- Headers
+            -- Properties
+            -- byte[] data
+         The headers and properties of the message are basically key/value pairs.
+         The difference between them is that headers are defined by the AMQP specification whereas properties can contain arbitrary,
+         application-specific information. The actual message content is just a sequence of bytes,
+         so if you want to pass text around in your messages, then you should standardise on an encoding. UTF-8 is a good bet.
+         You can specify a content type and encoding in the message headers if you want, but that's apparently not particularly common.
+         What does this have to do with binding?
+         One of the standard headers is called 'routing-key' and it is this that the broker uses to match messages to queues.
+         Each queue specifies a "binding key" and if that key matches the value of the 'routing-key' header, the queue receives the message.
+
+
+四种交换器: exchange behaviour type
+   1. direct -- the binding key must match the routing key exactly - no wildcard support.
+        (一对一(指定 队列名): binding key 与 routing key 完全匹配): 包含一个 空白字符串 名称的 默认交换器. 当声明一个队列时, 它会自动绑定到默认交换器, 并以队列名称作为 路由键.
         这意味着你可以使用如下代码发送消息到之前声明的队列去. 前提是你已经获得了信道实例:
         $channel -> basic_publish($msg, '', 'queue-name');
         参数一: 想要发送的消息内容;
         参数二: 空字符串, 指定默认交换器;
         参数三: 路由键--就是之前用来声明队列的名称.
-   2. fanout: 广播(一对多: 一个生产者可以对应多个消费者). 当你发送一条消息到 fanout 交换器时, 它会把消息投递给所有附加在此交换器上的队列. 这允许你对单条消息做不同
-        方式的反应.
+   2. fanout -- the routing and binding keys are ignored - all published messages go to all bound queues.
+        广播(一对多: 一个生产者可以对应多个消费者). 当你发送一条消息到 fanout 交换器时, 它会把消息投递给所有附加在此交换器上的队列.
+        这允许你对单条消息做不同方式的反应.
         它会把发送到该 Exchange 的消息路由到所有与它绑定的 Queue 中. -- 无视 binding key.
         举例来说, 一个 web 应用程序可能需要在用户上穿新的图片时, 用户相册必须清除缓存, 同时用户应该得到些积分奖励. 你可以将两个队列
         绑定到 图片上传交换器 上. 一个用于 清除缓存, 另一个用于增加用户积分. 从这个场景中你可以了解到, 使用交换器、绑定和队列
@@ -72,7 +97,9 @@ IM 只支持 一对一通信, 而 AMQP 消息支持 一对多的广播方式进�
         如果你是直接将消息发送给队列的话, 就不得不修改发送方的代码, 以将消息发送给新的用户积分(points) 队列.
         如果你使用的是 fanout 交换器的话, 你唯一需要做的就是为新的消费者写一段代码, 然后声明新的队列并将其绑定到 fanout 交换器上.
         就如同之前讲的, 发送方的代码和消费者的代码两者之间完全解耦了, 这允许你轻而易举地添加应用程序地功能.
-   3. topic: 主题模式 (多对多: 通配符匹配).
+   3. topic -- same as direct, but wildcards are allowed in the binding key.
+        '#' matches zero or more dot-delimited words and '*' matches exactly one such word.
+        主题模式 (多对多: 通配符匹配).
         示例: web 应用程序日期系统. 拥有多个不同地日志级别, error,info,warning 等. 与此同时, 你的应用程序分为以下几个模块:
         user-profile, image-gallery, msg-inbox 等. 如果在发送消息的动作失败时, 你想要报告一个 error 的话, 则可以编写以下代码:
         $channel -> basic_publish($msg, 'logs-exchange', 'error.msg-inbox');
@@ -90,9 +117,34 @@ IM 只支持 一对一通信, 而 AMQP 消息支持 一对多的广播方式进�
         当然, 要使得之前的示例能够运行, 你必须在绑定之前对队列进行声明. "*" 操作符将 "." 视为分隔符; 与之不同的是, "#" 操作符没有
         分块的概念, 它将任意 "." 字符均视为关键字的匹配部分.
         "*" 匹配一个单词, "#" 匹配多个单词(可以是零个)
+        For example, say a publisher sends a message with a routing key of "NYSE" to a topic exchange called "Stocks".
+        If a consumer creates a queue attached to "Stocks" with a binding key of "#", "*", or "NYSE",
+        then that consumer will get the message because all three binding keys match "NYSE". However,
+        if the message is published to a direct exchange, then the consumer will not get the message if the binding key is "#" or "*"
+        since those characters are treated as literals, not wildcards.
+        Interestingly, "#.#" will also match "NYSE" despite the routing key not having a dot.
+        Now consider a message with a routing key of "NYSE.TECH.MSFT". What binding keys will match it given that the message
+           is going to a topic exchange?
+        Binding key                     Match?
+        NYSE.TECH.MSFT                   YES
+            #                            YES
+        NYSE.#                           YES
+          *.*                            NO
+          NYSE.*                         NO
+          NYSE.TECH.*                    YES
+          NYSE.*.MSFT                    YES
 
    4. headers: 允许你匹配 AMQP 消息的 header 而非路由键, 除此之外, headers 交换器和 direct 交换器完全一致,
       但性能会差很多. 因此不太使用, 而且几乎再也用不到了.
+
+两种场景:
+    1. 一个交换器绑定多个队列, 每个队列绑定一个消费者; -- 日志的各个级别的记录.
+    2. 一个交换器绑定一个队列, 此队列绑定多个消费者. -- 只要消息被消费, 不管消费者是谁(分布式).
+
+---
+exclusive: 如果设置为 true 的话, 队列将变成私有的, 此时只有你的应用程序才能消费队列消息. 当你想要限制一个队列只有一个消费者的时候很有帮助.
+auto-delete: 当最后一个消费者取消订阅的时候, 队列就会自动删除. 如果你需要临时队列只为一个消费者服务的话, 请结合使用 auto-delete 和 exclusive.
+        当消费者断开连接时, 队列就被移除了.
 ---
 vhost:
    1. 创建 vhost.

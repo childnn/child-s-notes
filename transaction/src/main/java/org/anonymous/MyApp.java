@@ -1,6 +1,7 @@
 package org.anonymous;
 
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.BeanNameGenerator;
 import org.springframework.beans.factory.support.DefaultSingletonBeanRegistry;
 import org.springframework.boot.SpringApplication;
@@ -8,9 +9,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.context.AnnotationConfigServletWebServerApplicationContext;
 import org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
-import org.springframework.context.annotation.ScannedGenericBeanDefinition;
+import org.springframework.context.annotation.*;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.core.env.PropertySourcesPropertyResolver;
 
@@ -41,6 +40,17 @@ import org.springframework.core.env.PropertySourcesPropertyResolver;
  * @see ServletWebServerApplicationContext#refresh()
  * @see AbstractApplicationContext#refresh()
  * @see org.springframework.web.context.support.StandardServletEnvironment
+ *
+ * .@see PostProcessorRegistrationDelegate#invokeBeanFactoryPostProcessors(org.springframework.beans.factory.config.ConfigurableListableBeanFactory, java.util.List)
+ * @see org.springframework.context.annotation.ConfigurationClassPostProcessor // implements BeanDefinitionRegistryPostProcessor, PriorityOrdered
+ * @see BeanDefinitionRegistryPostProcessor
+ *
+ * Build and validate a configuration model based on the registry of
+ * {@link Configuration} classes.
+ * @see ConfigurationClassPostProcessor#processConfigBeanDefinitions(org.springframework.beans.factory.support.BeanDefinitionRegistry)
+ * .@see ConfigurationClassParser#parse(java.util.Set)
+ * .@see ConfigurationClassParser#doProcessConfigurationClass(org.springframework.context.annotation.ConfigurationClass, org.springframework.context.annotation.ConfigurationClassParser.SourceClass)
+ * .@see ComponentScanAnnotationParser#parse(org.springframework.core.annotation.AnnotationAttributes, java.lang.String)
  */
 //@EnableWebMvc
 @MapperScan("org.anonymous.dao")

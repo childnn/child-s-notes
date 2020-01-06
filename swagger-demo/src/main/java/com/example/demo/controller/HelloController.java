@@ -13,8 +13,8 @@ public class HelloController implements HelloControllerInterface {
 
     @GetMapping("/nihao")
     @Override
-    public String hello(String name) {
-        return "welcome to swagger! " + name;
+    public String hello() {
+        return "welcome to swagger! ";
     }
 
     /**
