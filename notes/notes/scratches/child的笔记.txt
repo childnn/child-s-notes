@@ -2,7 +2,9 @@
 
 1. NPE 的避免
   1.1. 时刻注意分析各个对象是否可能为空, 尤其数据库获取的集合;
-  1.2.
+  1.2. @SuppressWarnings("UnusedParameters")
+
+  org.springframework.web.reactive.result.method.AbstractHandlerMethodMapping.MappingRegistry.register
 
 
 http://39.100.255.114:8080/xqlive/api-auth/oauth/token?

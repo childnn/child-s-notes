@@ -1,6 +1,7 @@
 package org.anonymous.util;
 
 import net.sf.cglib.beans.BeanMap;
+import org.apache.commons.collections4.MapUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -13,6 +14,18 @@ import java.util.Map;
  * 2019/6/24 12:03
  */
 public class Bean0Map {
+
+    public static void main(String[] args) {
+        MapUtils.verbosePrint(System.out, "label", new HashMap<Object, Object>() {{
+            put("jack", 123);
+            put("rose", 123);
+        }});
+        MapUtils.debugPrint(System.out, "label", new HashMap<Object, Object>() {{
+            put("jack", 123);
+            put("rose", 123);
+        }});
+    }
+
     /**
      * //必须要有 get 方法: 需要从给定的 bean 中获取属性
      *

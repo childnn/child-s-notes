@@ -1,6 +1,7 @@
 package org.anonymous.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections4.MapUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -31,10 +32,10 @@ public class StringTemplateUtil {
         if (StringUtils.isBlank(regex)) {
             return template;
         }
-        if (data == null || data.size() == 0) {
+        if (MapUtils.isEmpty(data)) {
             return template;
         }
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(template);
 
@@ -44,15 +45,16 @@ public class StringTemplateUtil {
             if (value == null) {
                 value = "";
             }
-//            matcher.appendReplacement(sb, value);
+            matcher.appendReplacement(sb, value);
         }
-//        matcher.appendTail(sb);
+        matcher.appendTail(sb);
         return sb.toString();
     }
 
     public static void main(String[] args) {
         String template = "您提现{borrowAmount}元至尾号{tailNo}的请求失败, 您可以重新提交提款申请..";
-        Map<String, String> data = new HashMap<String, String>(){{
+        @SuppressWarnings("serial")
+        Map<String, String> data = new HashMap<String, String>() {{
             put("borrowAmount", "1000.00");
             put("tailNo", "1234");
         }};

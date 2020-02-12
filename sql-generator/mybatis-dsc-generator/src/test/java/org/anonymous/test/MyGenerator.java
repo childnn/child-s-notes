@@ -18,20 +18,20 @@ public class MyGenerator {
     public static final String AUTHOR = "xuzhen";
     public static final String VERSION = "V1.0";
     // 数据库连接信息：连接URL、用户名、秘密、数据库名
-    public static final String URL = "jdbc:mysql://120.78.70.187:3306/beverage_center?useSSL=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8";
+    public static final String URL = "jdbc:mysql://120.78.70.187:3306/elephant_car_center?useSSL=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8";
     public static final String NAME = "root";
     public static final String PASS = "lipeng632930871";
-    public static final String DATABASE = "beverage_center";
+    public static final String DATABASE = "elephant_car_center";
 
-    public static final String TABLE = "test_generator";
-    public static final String CLASSCOMMENT = "测试生成代码表";
+    public static final String TABLE = "cash_apply_log";
+    public static final String CLASSCOMMENT = "提现进度日志";
 
     // 路径信息，分开路径方便聚合工程项目，微服务项目
-    public static final String projectName = "beverage";
+    public static final String projectName = "elephant";
     //是否是Swagger配置
     public static final String IS_SWAGGER = "true";
 
-	private static final String OUTPUT_URL = "E:\\";// 生成文件存放位置
+    private static final String OUTPUT_URL = "E:\\";// 生成文件存放位置
 
 
     public static void main(String[] args) {

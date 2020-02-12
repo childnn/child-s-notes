@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
-    <artifactId>demo</artifactId>
+    <artifactId>swagger-demo</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>swagger-demo</name>
     <description>swagger-demo</description>
@@ -25,7 +25,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <!--<version>1.18.8</version>-->
+            <!--<version>1.18.10</version>-->
         </dependency>
         <!--<dependency>-->
         <!--<groupId>io.springfox</groupId>-->
@@ -40,10 +40,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>1.1.18</version>
+            <version>1.1.21</version>
         </dependency>
         <dependency>
             <groupId>com.spring4all</groupId>
