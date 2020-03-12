@@ -11,7 +11,7 @@
     <modules>
         <module>rabbit</module>
         <module>jms</module>
-        <module>spring-jms-demo</module>
+        <module>spring-jms</module>
         <module>spring-rabbit</module>
     </modules>
 

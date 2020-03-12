@@ -2,7 +2,6 @@ package com.example.test;
 
 import com.example.util.LongId;
 import com.example.util.RandomUtil;
-import org.apache.commons.id.serial.LongGenerator;
 import org.junit.Test;
 
 import java.util.HashSet;
@@ -36,7 +35,7 @@ public class RandomDemo {
     // 没有 maven jar
     @Test
     public void test1() {
-        LongGenerator longGenerator = new LongGenerator(false, 1L);
+        /*LongGenerator longGenerator = new LongGenerator(false, 1L);
         Set<Long> set = new HashSet<>();
         while (true) {
             int beforeSize = set.size();
@@ -51,7 +50,7 @@ public class RandomDemo {
                 System.out.println(aLong);
                 return;
             }
-        }
+        }*/
     }
 
     // nonononono

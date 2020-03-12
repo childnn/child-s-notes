@@ -1,0 +1,9 @@
+spring:
+  security:
+    user:
+      name: user
+      password: password
+
+#      \u7B49\u4EF7\u4E8E org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession \uFF1F\uFF1F\uFF1F
+#  session:
+#    store-type: redis

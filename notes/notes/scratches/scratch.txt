@@ -1,4 +1,4 @@
-nginx: start nginx // nginx -s reload //nginx -s stop
+nginx: start nginx // nginx -s reload // nginx -s stop
 SSI: Server Side Include 一种类似于 ASP 的基于服务器的网页制作技术.
     通过 include 指令引入其他静态页面, 解耦  -- 只能引入 静态资源
     指令:

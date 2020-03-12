@@ -133,13 +133,13 @@ public class GroupChatServer {
 }
 
 // 可以写一个Handler
-class MyHandler {
-    public void readData() {
-
-    }
-
-    public void sendInfoToOtherClients() {
-
-    }
-}
+//class MyHandler {
+//    public void readData() {
+//
+//    }
+//
+//    public void sendInfoToOtherClients() {
+//
+//    }
+//}
 

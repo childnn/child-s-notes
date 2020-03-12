@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/persistence"
+             version="2.0"
+             xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+                        http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+    <!--
+     持久化单元
+       name： 单元名称
+       transaction-type： 
+           RESOURCE_LOCAL 本地事务管理
+           JTA： 分布式事务管理 
+    -->
+
+    <persistence-unit name="jpa" transaction-type="RESOURCE_LOCAL">
+        <!--jpa 实现方式: hibernate-->
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!--<class>org.anonymous.domain.Customer</class>-->
+
+        <!--配置 jpa 实现方的配置信息-->
+        <!--数据库信息-->
+        <properties>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value="root"/>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/jpa"/>
+
+            <!--其他属性-->
+            <!--显示 sql-->
+            <property name="hibernate.show_sql" value="true"/>
+            <!--格式化 sql-->
+            <property name="hibernate.format_sql" value="true"/>
+            <!--自动创建表
+              create: 先删除再创建表
+              update: 无则创建, 有则不变
+              none: 不创建表
+            -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!--dialect-->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+        </properties>
+
+    </persistence-unit>
+    <!--<persistence-unit name=""/>-->
+</persistence>
+

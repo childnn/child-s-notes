@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
  *
  * @author MiaoOne
  * @since 2020/1/4 18:55
+ * idea 匹配空行: ^\s
  */
 public class RegexTest {
     void p(Object o) {
