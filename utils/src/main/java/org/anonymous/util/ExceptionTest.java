@@ -1,6 +1,6 @@
 package org.anonymous.util;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * ~~ Talk is cheap. Show me the code. ~~ :-)

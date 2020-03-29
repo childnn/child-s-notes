@@ -6,7 +6,7 @@ import cn.hutool.core.clone.Cloneable;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * ~~ Talk is cheap. Show me the code. ~~ :-)

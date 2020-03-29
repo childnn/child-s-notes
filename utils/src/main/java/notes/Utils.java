@@ -1,8 +1,11 @@
 package notes;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * ~~ Talk is cheap. Show me the code. ~~ :-)

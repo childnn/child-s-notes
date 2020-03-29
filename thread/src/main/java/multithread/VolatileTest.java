@@ -24,6 +24,7 @@ public class VolatileTest {
         System.out.println(test.inc);
     }
 
+    // ++ 操作并不会保证原子性
     public void increase() {
         inc++;
     }

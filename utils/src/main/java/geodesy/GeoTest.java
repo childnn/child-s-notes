@@ -4,7 +4,7 @@ import org.gavaghan.geodesy.Ellipsoid;
 import org.gavaghan.geodesy.GeodeticCalculator;
 import org.gavaghan.geodesy.GeodeticCurve;
 import org.gavaghan.geodesy.GlobalCoordinates;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * ~~ Talk is cheap. Show me the code. ~~ :-)

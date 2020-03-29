@@ -2,7 +2,7 @@ package test.emoji;
 
 import com.vdurmont.emoji.EmojiParser;
 import org.apache.commons.codec.binary.Base64;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.web.util.HtmlUtils;
 
 import java.io.UnsupportedEncodingException;

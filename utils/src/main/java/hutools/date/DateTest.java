@@ -2,7 +2,7 @@ package hutools.date;
 
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.Quarter;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * ~~ Talk is cheap. Show me the code. ~~ :-)
