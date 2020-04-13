@@ -10,6 +10,18 @@ import io.netty.channel.socket.nio.NioSocketChannel;
 
 import static org.anonymous.bio.BIOServer.HOST;
 
+/**
+ * @see io.netty.channel.ChannelHandler
+ * @see io.netty.channel.ChannelInboundHandler
+ * @see io.netty.channel.ChannelOutboundHandler
+ * @see io.netty.channel.ChannelPipeline
+ * @see io.netty.channel.ChannelHandlerContext
+ * @see io.netty.channel.Channel
+ * @see EventLoopGroup
+ * @see io.netty.channel.EventLoop
+ * ---
+ * @see io.netty.buffer.Unpooled
+ */
 public class NettyClient {
 
     public static void main(String[] args) {

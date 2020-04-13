@@ -3,7 +3,9 @@ package file;
 import org.junit.Test;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -56,6 +58,21 @@ public class PathsTest {
         System.out.println("file = " + file);
         URI uri = path.toUri();
         System.out.println("uri = " + uri);
-
     }
+
+    // 批量重命名文件
+    @Test
+    public void renameFiles() throws IOException {
+        Files.list(Paths.get("E:\\三国演义(中国评书网www.zgpingshu.com)"))
+                .forEach(p -> {
+                    //System.out.println(p.getParent());
+                    /*这里加上可以绝对路径(父目录), 否则重命名后的文件在当前项目目录下*/
+                    p.toFile().renameTo(new File(p.getParent() + "\\" + p.getFileName().toString().replace("xxx", "")));
+                });
+    }
+
+    @Test
+    public void f() {
+    }
+
 }

@@ -10,24 +10,22 @@ import io.netty.handler.codec.string.StringEncoder;
 
 public class GroupChatServer {
 
-    private int port; //监听端口
-
+    private int port; // 监听端口
 
     public GroupChatServer(int port) {
         this.port = port;
     }
 
     public static void main(String[] args) throws Exception {
-
         new GroupChatServer(7000).run();
     }
 
     //编写run方法，处理客户端的请求
-    public void run() throws Exception {
+    public void run() throws InterruptedException {
 
         //创建两个线程组
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
-        EventLoopGroup workerGroup = new NioEventLoopGroup(); //8个NioEventLoop
+        EventLoopGroup workerGroup = new NioEventLoopGroup(); // 8个NioEventLoop
 
         try {
             ServerBootstrap b = new ServerBootstrap();
@@ -37,10 +35,8 @@ public class GroupChatServer {
                     .option(ChannelOption.SO_BACKLOG, 128)
                     .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
-
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-
                             //获取到pipeline
                             ChannelPipeline pipeline = ch.pipeline();
                             //向pipeline加入解码器
@@ -49,7 +45,6 @@ public class GroupChatServer {
                             pipeline.addLast("encoder", new StringEncoder());
                             //加入自己的业务处理handler
                             pipeline.addLast(new GroupChatServerHandler());
-
                         }
                     });
 

@@ -41,13 +41,9 @@ public class NettyByteBuf02 {
             // ByteBufUtil.decodeString(this, index, length, charset) // 4.x
             // ByteBufUtil.decodeString(ByteBuffer src, Charset charset) // 5.0
             System.out.println(byteBuf.toString(0, 4, StandardCharsets.UTF_8)); // 5.0
-            //System.out.println(byteBuf.getCharSequence(0, 4, StandardCharsets.UTF_8)); // 4.x
+            System.out.println(byteBuf.getCharSequence(0, 4, StandardCharsets.UTF_8)); // 4.x
             //System.out.println(byteBuf.getCharSequence(4, 6, StandardCharsets.UTF_8));
             System.out.println(byteBuf.toString(4, 6, StandardCharsets.UTF_8));
-
-
         }
-
-
     }
 }

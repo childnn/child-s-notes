@@ -15,7 +15,7 @@ import java.sql.SQLException;
  */
 public class MyGenerator {
     // 基础信息：作者、版本
-    public static final String AUTHOR = "xuzhen";
+    public static final String AUTHOR = "xxx";
     public static final String VERSION = "V1.0";
     // 数据库连接信息：连接URL、用户名、秘密、数据库名
     public static final String URL = "jdbc:mysql://120.78.70.187:3306/elephant_car_center?useSSL=false&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8";

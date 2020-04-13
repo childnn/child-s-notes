@@ -3,6 +3,11 @@ package org.anonymous.netty.buf;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 
+/**
+ * @see ByteBuf
+ * {@code io.netty.buffer.AbstractByteBuf#writerIndex}
+ * {@code io.netty.buffer.AbstractByteBuf#readerIndex}
+ */
 public class NettyByteBuf01 {
     public static void main(String[] args) {
         //创建一个ByteBuf
@@ -20,10 +25,11 @@ public class NettyByteBuf01 {
             buffer.writeByte(i);
         }
 
-        System.out.println("capacity=" + buffer.capacity());//10
+        // length
+        System.out.println("capacity=" + buffer.capacity()); //10
         //输出
 //        for(int i = 0; i<buffer.capacity(); i++) {
-//            System.out.println(buffer.getByte(i));
+//            System.out.println(buffer.getByte(i)); // 指定索引， readIndex 不变
 //        }
         for (int i = 0; i < buffer.capacity(); i++) {
             System.out.println(buffer.readByte());

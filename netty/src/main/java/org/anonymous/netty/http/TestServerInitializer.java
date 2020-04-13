@@ -12,7 +12,6 @@ public class TestServerInitializer extends ChannelInitializer<SocketChannel> {
     protected void initChannel(SocketChannel ch) throws Exception {
 
         //向管道加入处理器
-
         //得到管道
         ChannelPipeline pipeline = ch.pipeline();
 
@@ -24,6 +23,5 @@ public class TestServerInitializer extends ChannelInitializer<SocketChannel> {
         pipeline.addLast("MyTestHttpServerHandler", new TestHttpServerHandler());
 
         System.out.println("ok~~~~");
-
     }
 }
