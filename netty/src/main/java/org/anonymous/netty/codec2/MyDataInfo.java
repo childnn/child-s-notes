@@ -450,7 +450,6 @@ public final class MyDataInfo {
      * <code>.MyMessage.DataType data_type = 1;</code>
      */
     public DataType getDataType() {
-      @SuppressWarnings("deprecation")
       DataType result = DataType.valueOf(dataType_);
       return result == null ? DataType.UNRECOGNIZED : result;
     }
@@ -1033,7 +1032,6 @@ public final class MyDataInfo {
        * <code>.MyMessage.DataType data_type = 1;</code>
        */
       public DataType getDataType() {
-        @SuppressWarnings("deprecation")
         DataType result = DataType.valueOf(dataType_);
         return result == null ? DataType.UNRECOGNIZED : result;
       }

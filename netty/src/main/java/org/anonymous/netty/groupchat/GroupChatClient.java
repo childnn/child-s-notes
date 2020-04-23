@@ -10,7 +10,6 @@ import io.netty.handler.codec.string.StringEncoder;
 
 import java.util.Scanner;
 
-
 public class GroupChatClient {
 
     //属性
@@ -28,18 +27,13 @@ public class GroupChatClient {
 
     public void run() throws Exception {
         EventLoopGroup group = new NioEventLoopGroup();
-
         try {
-
-
             Bootstrap bootstrap = new Bootstrap()
                     .group(group)
                     .channel(NioSocketChannel.class)
                     .handler(new ChannelInitializer<SocketChannel>() {
-
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
-
                             //得到pipeline
                             ChannelPipeline pipeline = ch.pipeline();
                             //加入相关handler

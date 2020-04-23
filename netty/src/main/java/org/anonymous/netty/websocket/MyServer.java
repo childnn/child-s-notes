@@ -15,6 +15,9 @@ import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
+/**
+ * 长连接
+ */
 public class MyServer {
     public static void main(String[] args) throws Exception {
 
@@ -22,14 +25,12 @@ public class MyServer {
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(); //8个NioEventLoop
         try {
-
             ServerBootstrap serverBootstrap = new ServerBootstrap();
 
             serverBootstrap.group(bossGroup, workerGroup);
             serverBootstrap.channel(NioServerSocketChannel.class);
             serverBootstrap.handler(new LoggingHandler(LogLevel.INFO));
             serverBootstrap.childHandler(new ChannelInitializer<SocketChannel>() {
-
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ChannelPipeline pipeline = ch.pipeline();
@@ -63,10 +64,10 @@ public class MyServer {
             //启动服务器
             ChannelFuture channelFuture = serverBootstrap.bind(7000).sync();
             channelFuture.channel().closeFuture().sync();
-
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
     }
+
 }

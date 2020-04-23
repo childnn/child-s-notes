@@ -47,4 +47,15 @@ volatile
      3. 而且, 访问变量时, 没有其他的原因需要加锁
 publishing 发布 一个对象的意思是使它能够被当前范围之外的代码所使用.
 escape 逸出: 一个对象在尚未准备好时就将它发布.
+----------------------------------
+java.util.concurrent.ExecutorService 暗示了生命周期有 3 种状态: 运行 running, 关闭 shutting down, 终止 terminated
+ExecutorService 最初创建后的初始状态是 运行 状态. shutdown 方法会启动一个平缓的关闭过程: 停止接受新的任务, 同时
+等待已经提交的任务完成--包括尚未开始执行的任务. shutdownNow 方法会启动一个强制的关闭过程: 尝试取消所有运行中的
+任务和排在队列中尚未开始的任务.
+在关闭后提交到 ExecutorService 中的任务, 会被拒绝执行处理器 rejected execution handler 处理. java.util.concurrent.RejectedExecutionHandler
+拒绝执行处理器可能只是简单的放弃任务, 也可能引起 execute 抛出一个 unchecked 异常 RejectedExecutionException.
+一旦所有的任务全部完成后, ExecutorService 会转入 terminated 状态.
+可以调用 awaitTermination 等待 ExecutorService 到达终止状态, 也可以轮询检查 isTerminated 判断 ExecutorService
+是否已经终止. 通常 shutdown 会紧随 awaitTerminated 之后, 这样可以产生同步的关闭 ExecutorService 的效果.
+
 

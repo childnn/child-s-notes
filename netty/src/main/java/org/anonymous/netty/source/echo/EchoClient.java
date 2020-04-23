@@ -21,6 +21,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 
 /**
@@ -40,8 +41,8 @@ public final class EchoClient {
         // Configure SSL.git
         final SslContext sslCtx;
         if (SSL) {
-            sslCtx = SslContext.newClientContext(null, null, InsecureTrustManagerFactory.INSTANCE); // 5.0
-            //sslCtx = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+            //sslCtx = SslContext.newClientContext(null, null, InsecureTrustManagerFactory.INSTANCE); // 5.0
+            sslCtx = SslContextBuilder.forClient().trustManager(InsecureTrustManagerFactory.INSTANCE).build();
         } else {
             sslCtx = null;
         }

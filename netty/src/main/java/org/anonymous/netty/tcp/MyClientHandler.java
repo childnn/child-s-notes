@@ -22,13 +22,13 @@ public class MyClientHandler extends SimpleChannelInboundHandler<ByteBuf> {
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
-        byte[] buffer = new byte[msg.readableBytes()];
-        msg.readBytes(buffer);
+        //byte[] buffer = new byte[msg.readableBytes()];
+        //msg.readBytes(buffer);
+        //String message = new String(buffer, StandardCharsets.UTF_8);
 
-        String message = new String(buffer, StandardCharsets.UTF_8);
+        String message = msg.toString(0, msg.capacity(), StandardCharsets.UTF_8);
         System.out.println("客户端接收到消息=" + message);
         System.out.println("客户端接收消息数量=" + (++this.count));
-
     }
 
     @Override

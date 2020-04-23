@@ -166,7 +166,7 @@ import java.util.List;
  *              配合 @Autowired, 指定具体需要 注入 容器中的 哪个实现类
  *          eg：
  *          @Autowired
- *          @Qualifier( "accountDao0") //多个实现类对象注入冲突的解决方式二: 指定 id -- 该 id 对应 实现类的 id
+ *          @Qualifier ("accountDao0") //多个实现类对象注入冲突的解决方式二: 指定 id -- 该 id 对应 实现类的 id
  *          private AccountDao accountDao; //接口
  *
  *        注: 如果该接口 有多个实现类, 正常来说, 应该使用 @Qualifier(指定实现类 id)

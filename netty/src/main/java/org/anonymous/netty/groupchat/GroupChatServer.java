@@ -22,7 +22,6 @@ public class GroupChatServer {
 
     //编写run方法，处理客户端的请求
     public void run() throws InterruptedException {
-
         //创建两个线程组
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
         EventLoopGroup workerGroup = new NioEventLoopGroup(); // 8个NioEventLoop
