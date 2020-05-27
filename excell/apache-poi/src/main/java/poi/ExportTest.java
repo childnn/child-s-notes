@@ -1,3 +1,5 @@
+package poi;
+
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -23,7 +25,7 @@ public class ExportTest {
      * 注意：同一行上的只能创建同一个行对象row  否则赋值的内容会被覆盖。
      */
     public static void main(String[] args) {
-        //1.创建一个webbook，对应一个Excel文件
+        //1.创建一个workbook，对应一个Excel文件
         HSSFWorkbook wb = new HSSFWorkbook();
         //2.在建立的工作簿中添加一个sheet，对应Excell文件中的工作簿，并设置工作簿名称
         HSSFSheet sheet = wb.createSheet("我是工作簿左下角的名字（第一个）");

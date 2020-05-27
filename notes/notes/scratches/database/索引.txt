@@ -1,3 +1,195 @@
+优化：
+在一张电影演员表中，在actor_id和film_id两个列上都建立了独立的索引，然后有如下查询：
+select film_id,actor_id from film_actor where actor_id = 1 or film_id = 1
+===> 编译器的优化
+select film_id,actor_id from film_actor where actor_id = 1
+union all
+select film_id,actor_id from film_actor where film_id = 1 and actor_id <> 1
+-------------------------------------------------------------------------------------
+SELECT film_id,description FROM film ORDER BY title LIMIT 50,5;
+==> 大数据量
+SELECT film.film_id,film.description
+FROM film INNER JOIN (
+    SELECT film_id FROM film ORDER BY title LIMIT 50,5
+) AS tmp USING(film_id);
+--------------------------------------
+SELECT id FROM t LIMIT 10000, 10;
+==>
+SELECT id FROM t WHERE id > 10000 LIMIT 10;
+-------------------------------------------------------
+UPDATE operation o
+SET    status = 'applying'
+WHERE  o.id IN (SELECT id
+                FROM   (SELECT o.id,
+                               o.status
+                        FROM   operation o
+                        WHERE  o.group = 123
+                               AND o.status NOT IN ( 'done' )
+                        ORDER  BY o.parent,
+                                  o.id
+                        LIMIT  1) t);
+==>
+UPDATE operation o
+       JOIN  (SELECT o.id,
+                            o.status
+                     FROM   operation o
+                     WHERE  o.group = 123
+                            AND o.status NOT IN ( 'done' )
+                     ORDER  BY o.parent,
+                               o.id
+                     LIMIT  1) t
+         ON o.id = t.id
+SET    status = 'applying';
+-------------------------------------------------------------------
+SELECT *
+FROM   my_order o
+       INNER JOIN my_appraise a ON a.orderid = o.id
+ORDER  BY a.is_reply ASC,
+          a.appraise_time DESC
+LIMIT  0, 20
+==>  is_reply 只有0和1两种状态
+SELECT *
+FROM ((SELECT *
+         FROM   my_order o
+                INNER JOIN my_appraise a
+                        ON a.orderid = o.id
+                           AND is_reply = 0
+         ORDER  BY appraise_time DESC
+         LIMIT  0, 20)
+        UNION ALL
+        (SELECT *
+         FROM   my_order o
+                INNER JOIN my_appraise a
+                        ON a.orderid = o.id
+                           AND is_reply = 1
+         ORDER  BY appraise_time DESC
+         LIMIT  0, 20)) t
+ORDER  BY  is_reply ASC,
+          appraisetime DESC
+LIMIT  20;
+------------------------------------------------------------------------------
+SELECT *
+FROM   my_neighbor n
+       LEFT JOIN my_neighbor_apply sra
+              ON n.id = sra.neighbor_id
+                 AND sra.user_id = 'xxx'
+WHERE  n.topic_status < 4
+       AND EXISTS(SELECT 1
+                  FROM   message_info m
+                  WHERE  n.id = m.neighbor_id
+                         AND m.inuser = 'xxx')
+       AND n.topic_type <> 5
+==>
+ELECT *
+FROM   my_neighbor n
+       INNER JOIN message_info m
+               ON n.id = m.neighbor_id
+                  AND m.inuser = 'xxx'
+       LEFT JOIN my_neighbor_apply sra
+              ON n.id = sra.neighbor_id
+                 AND sra.user_id = 'xxx'
+WHERE  n.topic_status < 4
+       AND n.topic_type <> 5
+-----------------------------------------------------------------
+SELECT *
+FROM   (SELECT target,
+               Count(*)
+        FROM   operation
+        GROUP  BY target) t
+WHERE  target = 'rm-xxxx';
+==>
+SELECT target,
+       Count(*)
+FROM   operation
+WHERE  target = 'rm-xxxx'
+GROUP  BY target;
+----------------------------------------------------------------------
+SELECT *
+FROM   my_order o
+       LEFT JOIN my_userinfo u
+              ON o.uid = u.uid
+       LEFT JOIN my_productinfo p
+              ON o.pid = p.pid
+WHERE  ( o.display = 0 )
+       AND ( o.ostaus = 1 )
+ORDER  BY o.selltime DESC
+LIMIT  0, 15;
+==> 提前缩小范围
+SELECT *
+FROM (
+SELECT *
+FROM   my_order o
+WHERE  ( o.display = 0 )
+       AND ( o.ostaus = 1 )
+ORDER  BY o.selltime DESC
+LIMIT  0, 15
+) o
+     LEFT JOIN my_userinfo u
+              ON o.uid = u.uid
+     LEFT JOIN my_productinfo p
+              ON o.pid = p.pid
+ORDER BY  o.selltime DESC
+limit 0, 15;
+---------------------------------------------------------------
+SELECT    a.*,
+          c.allocated
+FROM      (
+              SELECT   resourceid
+              FROM     my_distribute d
+                   WHERE    isdelete = 0
+                   AND      cusmanagercode = '1234567'
+                   ORDER BY salecode limit 20) a
+LEFT JOIN
+          (
+              SELECT   resourcesid， sum(ifnull(allocation, 0) * 12345) allocated
+              FROM     my_resources
+                   GROUP BY resourcesid) c
+ON        a.resourceid = c.resourcesid
+==> 其实对于子查询 c，左连接最后结果集只关心能和主表 resourceid 能匹配的数据
+SELECT    a.*,
+          c.allocated
+FROM      (
+                   SELECT   resourceid
+                   FROM     my_distribute d
+                   WHERE    isdelete = 0
+                   AND      cusmanagercode = '1234567'
+                   ORDER BY salecode limit 20) a
+LEFT JOIN
+          (
+                   SELECT   resourcesid， sum(ifnull(allocation, 0) * 12345) allocated
+                   FROM     my_resources r,
+                            (
+                                     SELECT   resourceid
+                                     FROM     my_distribute d
+                                     WHERE    isdelete = 0
+                                     AND      cusmanagercode = '1234567'
+                                     ORDER BY salecode limit 20) a
+                   WHERE    r.resourcesid = a.resourcesid
+                   GROUP BY resourcesid) c
+ON        a.resourceid = c.resourcesid
+==> 但是子查询 a 在我们的SQL语句中出现了多次。这种写法不仅存在额外的开销，还使得整个语句显的繁杂。使用 WITH 语句再次重写
+WITH a AS
+(
+         SELECT   resourceid
+         FROM     my_distribute d
+         WHERE    isdelete = 0
+         AND      cusmanagercode = '1234567'
+         ORDER BY salecode limit 20)
+SELECT    a.*,
+          c.allocated
+FROM      a
+LEFT JOIN
+          (
+                   SELECT   resourcesid， sum(ifnull(allocation, 0) * 12345) allocated
+                   FROM     my_resources r,
+                            a
+                   WHERE    r.resourcesid = a.resourcesid
+                   GROUP BY resourcesid) c
+ON        a.resourceid = c.resourcesid
+
+
+
+
 数据库索引的作用和优点缺点以及索引的11中用法
 为什么要创建索引呢？这是因为，创建索引可以大大提高系统的性能。
 第一，通过创建唯一性索引，可以保证数据库表中每一行数据的唯一性。

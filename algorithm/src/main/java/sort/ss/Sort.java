@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class Sort {
 
-    static int[] arr = {3, -1, 2, 11, 7, -3, 0};
+    public static final int[] arr = {3, -1, 2, 11, 7, -3, 0};
     //static Integer[] arr = {3, -1, 2, 11, 7, -3, 0};
     // 最佳情况：T(n) = O(nlogn) 最差情况：T(n) = O(nlogn) 平均情况：T(n) = O(nlogn)
     // 堆排序（Heapsort）是指利用堆这种数据结构所设计的一种排序算法。
@@ -222,7 +222,7 @@ public class Sort {
         return smallIndex;
     }
 
-    private static void swap(int[] array, int i, int j) {
+    public static void swap(int[] array, int i, int j) {
         int temp = array[i];
         array[i] = array[j];
         array[j] = temp;
