@@ -13,18 +13,21 @@ public class VolatileTest {
         final VolatileTest test = new VolatileTest();
         for (int i = 0; i < 10; i++) {
             new Thread(() -> {
-                for (int j = 0; j < 1000; j++)
+                for (int j = 0; j < 10000; j++)
                     test.increase();
             }).start();
         }
 
-        while (Thread.activeCount() > 1)  // 保证前面的线程都执行完
+        // 活动线程实际上不止主线程一个,
+        // the current thread is willing to yield its current use of a processor
+        while (Thread.activeCount() > 2) { // 保证前面的线程都执行完
+            //System.out.println(Thread.activeCount());
             Thread.yield();
-
+        }
         System.out.println(test.inc);
     }
 
-    // ++ 操作并不会保证原子性
+    // volatile 对 ++ 操作并不会保证原子性
     public void increase() {
         inc++;
     }

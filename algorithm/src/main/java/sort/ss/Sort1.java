@@ -15,10 +15,37 @@ public class Sort1 {
 
     public static void main(String[] args) {
         //bubbleSort0(arr, arr.length);
-        //quickSort(arr, 0, arr.length - 1);
+        shellSort(arr, arr.length);
         //insertSort(arr);
-        heapSort(arr);
+        //heapSort(arr);
         System.out.println(Arrays.toString(arr));
+        shellSort(new int[]{}, 0);
+        shellSort(new int[]{1}, 1);
+    }
+
+    /**
+     * 基本思想: 先比较距离远的元素,而不是像简单交换排序算法那样先比较相邻的元素.
+     * 这样可以快速减少大量的无序情况,从而减轻后续的工作.被比较的元素之间的距离逐步减少,直到减少为 1,
+     * 这时排序变成了相邻元素的互换.
+     *
+     * @param arr
+     * @param length
+     */
+    static void shellSort(int[] arr, int length) {
+        int gap, i, j, temp;
+        // 外层循环控制两个被比较元素之间的距离,从 n/2 开始,逐步进行对折,直到距离为 0.
+        for (gap = length / 2; gap > 0; gap /= 2) {
+            // 中间层循环用于在元素间移动位置.
+            for (i = gap; i < length; i++) {
+                // 最内层循环用于比较各对相距 gap 个位置的元素, 当这两个元素逆序时把它们互换过来.
+                // 由于 gao 的值最终要递减为 1, 因此所有元素最终都会位于正确的排序位置上.
+                for (j = i - gap; j >= 0 && arr[j] > arr[j + gap]; j -= gap) {
+                    temp = arr[j];
+                    arr[j] = arr[j + gap];
+                    arr[j + gap] = temp;
+                }
+            }
+        }
     }
 
     static void bubbleSort(int[] a, int n) {
@@ -55,14 +82,14 @@ public class Sort1 {
 
     /**
      * @param arr
-     * @param l   数组左边界
-     * @param r   数组右边界
+     * @param leftIndex  数组左边界
+     * @param rightIndex 数组右边界
      */
-    static void quickSort(int[] arr, int l, int r) {
-        if (l < r) {
+    static void quickSort(int[] arr, int leftIndex, int rightIndex) {
+        if (leftIndex < rightIndex) {
             int i, j, x;
-            i = l;
-            j = r;
+            i = leftIndex;
+            j = rightIndex;
             x = arr[i];
 
             while (i < j) {
@@ -80,8 +107,8 @@ public class Sort1 {
                 }
             }
             arr[i] = x;
-            quickSort(arr, l, i - 1);
-            quickSort(arr, i + 1, r);
+            quickSort(arr, leftIndex, i - 1);
+            quickSort(arr, i + 1, rightIndex);
         }
     }
 

@@ -42,4 +42,5 @@ public class MyServerHandler extends SimpleChannelInboundHandler<MessageProtocol
 
         ctx.writeAndFlush(messageProtocol);
     }
+
 }

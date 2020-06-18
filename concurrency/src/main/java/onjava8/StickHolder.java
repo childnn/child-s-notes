@@ -1,6 +1,8 @@
 package onjava8;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
@@ -96,5 +98,80 @@ class DiningPhilosophers {
         new DiningPhilosophers(5); // [4]
         // Keeps main() from exiting:
         new Nap(3, "Shutdown");
+    }
+}
+
+class Allocator {
+    private List<Object> als = new ArrayList<>();
+
+    // 一次性申请所有资源
+    synchronized boolean apply(Object from, Object to) {
+        if (als.contains(from) || als.contains(to)) {
+            return false;
+        } else {
+            als.add(from);
+            als.add(to);
+        }
+        return true;
+    }
+
+    // 归还资源
+    synchronized void free(Object from, Object to) {
+        als.remove(from);
+        als.remove(to);
+    }
+}
+
+// wait()、notify()、notifyAll() 这三个方法能够被调用的前提是已经获取了相应的互斥锁，
+// 所以我们会发现 wait()、notify()、notifyAll() 都是在 synchronized{}内部被调用的。
+// 如果在 synchronized{}外部调用，或者锁定的 this，而用 target.wait() 调用的话，
+// JVM 会抛出一个运行时异常：java.lang.IllegalMonitorStateException。
+class Allocator1 {
+    private List<Object> als;
+
+    // 一次性申请所有资源
+    synchronized void apply(Object from, Object to) {
+        // 经典写法
+        while (als.contains(from) || als.contains(to)) {
+            try {
+                wait();
+            } catch (Exception e) {
+            }
+        }
+        als.add(from);
+        als.add(to);
+    }
+
+    // 归还资源
+    synchronized void free(Object from, Object to) {
+        als.remove(from);
+        als.remove(to);
+        notifyAll();
+    }
+}
+
+class Account {
+    // actr 应该为单例
+    private Allocator actr;
+    private int balance;
+
+    // 转账
+    void transfer(Account target, int amt) {
+        // 一次性申请转出账户和转入账户，直到成功
+        while (!actr.apply(this, target)) ;
+        try {
+            // 锁定转出账户
+            synchronized (this) {
+                // 锁定转入账户
+                synchronized (target) {
+                    if (this.balance > amt) {
+                        this.balance -= amt;
+                        target.balance += amt;
+                    }
+                }
+            }
+        } finally {
+            actr.free(this, target);
+        }
     }
 }
