@@ -47,13 +47,21 @@ an absolute value greater than one.
         </th>
     <tr valign=top>
         <th>Input Number</th>
-        <th>{@code UP}</th>
-        <th>{@code DOWN}</th>
-        <th>{@code CEILING}</th>
-        <th>{@code FLOOR}</th>
-        <th>{@code HALF_UP}</th>
-        <th>{@code HALF_DOWN}</th>
-        <th>{@code HALF_EVEN}</th>
+        <th>{@code UP} round away from zero</th>
+        <th>{@code DOWN} round towards zero</th>
+        <th>{@code CEILING} round towards positive infinity</th>
+        <th>{@code FLOOR} round towards negative infinity</th>
+        <th>{@code HALF_UP} round towards {@literal "nearest neighbor"}
+            unless both neighbors are equidistant, in which case round up.
+        </th>
+        <th>{@code HALF_DOWN} round towards {@literal "nearest neighbor"}
+            unless both neighbors are equidistant, in which case round
+            down
+        </th>
+        <th>{@code HALF_EVEN} round towards the {@literal "nearest neighbor"}
+            unless both neighbors are equidistant, in which case, round
+            towards the even neighbor
+        </th>
         <th>{@code UNNECESSARY}</th>
 
     <tr align=center>

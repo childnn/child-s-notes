@@ -29,10 +29,13 @@ public class InvokeDynamicTest {
     }
 
     /**
+     * 关于方法描述符的介绍,详见 src/main/resources/jvm.txt
+     *
      * @return
      * @see #BootstrapMethod(MethodHandles.Lookup, String, MethodType) 的 MethodType
      */
     static MethodType MT_BootStrapMethod() {
+        // 方法描述符:  CallSite methodName(Lookup, String, MethodType)
         return MethodType.fromMethodDescriptorString("(Ljava/lang/invoke/MethodHandles$Lookup;" +
                 "Ljava/lang/String;Ljava/lang/invoke/MethodType;)Ljava/lang/invoke/CallSite;", null);
     }

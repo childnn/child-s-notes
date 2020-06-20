@@ -374,3 +374,58 @@ Java 虚拟机中有三种引用类型: 类类型(class type),数组类型(array
     所表示的方法转换为对实际方法的直接引用. 类加载的过程中要解析尚未被解析的符号引用,并且将对变量的访问转化为变量在运行时,
     位于存储结构中的正确偏移量.
     由于对其他类中的方法和变量进行了 晚期绑定(late binding), 所以即便那些类发生变化,也不会影响调用他们的方法.
+-------------------------------
+描述符：Descriptor
+  一个描述字段或方法类型的字符串。
+  描述符和签名都是用特定的语法符号来表示的。这些语法是一组规则，用来表达怎样以一串字符构建出语法正确的各种描述符。
+  在本规范中，语法的终止符号（terminal symbol）用定宽的字体表示。非终止符号（non-terminal symbol）用斜体字表示，
+  非终止符的定义由被定义的非终止名后跟随一个冒号来表示。冒号下方会有一个或多个可供选用的非终止符定义，每个非终止符的定义占一行。
+  规则右边的 {x} 表示 x 出现 0 次或多次。
+  如果某条规则的冒号右侧出现了 “one of” 字样，那就表明下面一行或下面几行所列出的每个终止符号，都是可供选用的定义（alternative definition）.
+  1. 字段描述符 field descriptor
+     用来表示类，实例或局部变量。
+     FiledDescriptor:
+        FieldType
+     FiledType:
+        BaseType
+        ObjectType
+        ArrayType
+     BaseType: one of
+        B C D F I J S Z
+     ObjectType:
+        LClassName;
+     ArrayType:
+        [ComponentType
+     ComponentType:
+        FieldType
+     用来表示基本类型（BaseType）的各个字符，用来表示对象类型（ObjectType）的字符 “L” 和 “;”,
+     以及用来表示数组类型(ArrayType)的 "[" 字符都是 ASCII 编码的字符.
+     对象类型(ObjectType)中的 ClassName 表示一个类或接口二进制名称,它是以内部形式来编码的.
+     ----------
+     FieldType中的字符             类型               含义
+        B                          byte              有符号的字节型数
+        C                          char              基本多文种平面中的 Unicode 字符码点,UTF-16 编码
+        D                          double            双精度浮点数
+        F                          float             单精度浮点数
+        I                          int               整型数
+        J                          long              长整数
+        LClassName;                reference         ClassName 类的实例
+        S                          short             有符号短整型
+        Z                          boolean           布尔值 true/false
+        [                          reference         一个一维数组
+  2. 方法描述符  method descriptor
+     包含 0 个或多个参数描述符(parameter descriptor)以及 1 个返回值描述符(return descriptor).
+     参数描述符表示该方法所接受的参数类型,如果该方法有返回值的话,那么返回值描述符则表示该方法的返回值类型.
+     MethodDescriptor:
+         ({ParameterDescriptor})ReturnDescriptor
+     ParameterDescriptor:
+         FieldType
+     ReturnDescriptor:
+         FieldType
+         VoidDescriptor
+     VoidDescriptor:
+         V
+     字符 V 表示该方法不返回任何值(void)
+     eg: Object m(int i, double d, Thread t) {...}
+     该方法描述符为: (IDLjava/lang/Thread;)Ljava/lang/Object;
+

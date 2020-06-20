@@ -15,7 +15,7 @@ public class Sort1 {
 
     public static void main(String[] args) {
         //bubbleSort0(arr, arr.length);
-        shellSort(arr, arr.length);
+        qSort(arr, 0, arr.length - 1);
         //insertSort(arr);
         //heapSort(arr);
         System.out.println(Arrays.toString(arr));
@@ -81,6 +81,11 @@ public class Sort1 {
     }
 
     /**
+     * 对于一个给定的数组,从中选择一个元素,以该元素为界将其余元素划分为两个子集,
+     * 一个子集中的所有元素都小于该元素,另一个子集中的所有元素都大于或等于该元素.
+     * 对这样两个子集递归执行这一过程,当某个子集中的元素数小于 2 时,这个子集就不需要再次排序,
+     * 终止递归.
+     *
      * @param arr
      * @param leftIndex  数组左边界
      * @param rightIndex 数组右边界
@@ -110,6 +115,28 @@ public class Sort1 {
             quickSort(arr, leftIndex, i - 1);
             quickSort(arr, i + 1, rightIndex);
         }
+    }
+
+    // sort arr[left] ... arr[right] into increasing order.
+    static void qSort(int[] arr, int left, int right) {
+        int i, last;
+        // do nothing if array contains fewer than two elements.
+        if (left >= right) {
+            return;
+        }
+        // move partition element to arr[0];
+        swap(arr, left, (left + right) / 2);
+        last = left;
+        // partition
+        for (i = left + 1; i <= right; i++) {
+            if (arr[i] < arr[left]) {
+                swap(arr, ++last, i);
+            }
+        }
+        // restore partition element
+        swap(arr, left, last);
+        qSort(arr, left, last - 1);
+        qSort(arr, last + 1, right);
     }
 
     static void insertSort(int[] a) {

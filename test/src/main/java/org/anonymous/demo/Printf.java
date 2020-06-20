@@ -26,6 +26,11 @@ public class Printf {
         c = (char) temp; // 强转后丢弃 int 高位.
         System.out.println("c = " + c);
         System.out.println("i = " + i);
+
+        System.out.println(Double.NaN);
+        System.out.println(Double.MAX_VALUE);
+        double d = 1.7976931348623157e308;
+        System.out.println(0xCAFEBABE);
     }
 
 }
