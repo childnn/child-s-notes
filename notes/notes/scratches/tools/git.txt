@@ -7,6 +7,25 @@
  *    2. 修改完代码之后, 必须及时 add -> commit -> push 最新修改的代码
  *    3. 各自开发各自的模块, 如果需要修改公共代码, 必须事先确认有没有人正在修改
  *    4. 不要擅自修改同事的代码.
+
+ * !$    # 该命令自动补全上一次执行命令的余下部分
+ -----------------------------------------------------------------------------
+ * git 中的一些选项
+     -d
+     --delete   # 删除
+     -D
+     --delete --force
+     -f
+     --force
+     -m
+     --move  # 移动或重命名
+     -M
+     --move --force
+     -r
+     --remote
+     -a
+     --all
+ ------------------------------------------------------------------------------
  *
  * git： 分布式版本控制工具
  *  一般工作流程：
@@ -162,12 +181,14 @@
  *     $ git branch dev   # 创建分支
  *     $ git checkout dev # 切换分支
  *  2. $ git branch    # 查看当前分支
+       $ git branch -r    # 查看远程所有分支
+       $ git branch -a    # 查看本地和远程的所有分支
  *  3. 在当前分支上修改, 提交
  *  4. 切换到 master 分支
  *     $ git checkout master
  *   查看文件, 发现没有任何修改, 因为 那个修改的提交在 dev 分支上, 而 master 分支此刻的提交点并没有变
  *  5. 合并 dev 到 master 分支
- *    $ git merge dev    # 合并指定分支到当前分支
+ *    $ git merge dev    # 合并指定分支(dev)到当前分支
  *     合并后,再查看修改内容,现在 master 分支的内容就是最新的了
  *  6. 删除 dev 分支
  *    $ git branch -d dev
@@ -180,7 +201,7 @@
     8. push 本地分支到远程指定的分支(远程分支可以不存在, 该命令可以在远程创建新分支)
      $ git push <remote_name> localBranchName:remoteBranchName
      $  push <remote name,一般就是 origin> <本地分支名>:<远程分支名>
-     删除远程分支: 向远程推送空分支.
+     删除远程分支: 向远程推送空分支:
      $ git push <remote_name> :<remote_branch>
  *
  *  当 不同的分支对同一文件做了修改,且都 commit 到本地库后
@@ -201,6 +222,26 @@
     从远程分支 checkout 出来的本地分支, 称为 跟踪分支(tracking branch). 跟踪分支是一种和某个远程分支
     有直接关联的本地分支. 在跟踪分支里输入 git push, git 会自行推断应该向哪个服务器的哪个分支推送数据.
     同样, 在这些分支里运行 git pull 会获取所有远程索引, 并把它们的数据都合并到本地分支中来.
+    -------------------------------------
+    fetch & pull
+    $ git fetch <remote_name>   # 将某个远程主机的更新全部取回本地
+    $ git fetch <remote_name> <remote_branch_name>  # 指定分支, eg: git fetch origin master
+    更新后,会返回一个 FETCH_HEAD, 指 fetch 指定分支在服务器上的最新状态
+    $ git log -p FETCH_HEAD  # 查看刚取回的更新信息.
+    $ git pull <remote_name> <remote_branch_name>:<local_branch_name>
+    等价于以下两条命令
+    $ git fetch <remote_name> <remote_branch_name>   # 从远程主机的 remote_branch 拉取最新内容
+    $ git merge FETCH_HEAD      # 将拉取下来的最新内容合并到当前所在的分支中
+    如果远程分支是与当前分支合并,可以省略本地当前分支:
+    $ git pull <remote_name> <remote_branch_name>
+    ==============================
+    在新的 workspace 使用 fetch
+    $ git init
+    $ git fetch <git 地址>
+    $ git checkout -b <local_branch_name>
+    $ git merge FETCH_HEAD
+    ## 以上操作可以把远程指定地址的文件 down 到本地
+
 -------------------------------------------------------------------------------------------
  *
  * 分支的管理策略
@@ -308,7 +349,7 @@
         重命名远程分支: 先删除远程分支, 再新建分支.
         $ git push --delete <remote_name> <remote_branch_name>      # 删除远程分支.
         $ git branch -m <old_local_branch> <new_local_branch>       # 重命名本地分支.
-        $ git push <remote_name> <branch_name>
+        $ git push <remote_name>:<branch_name>
      5. $ git remote           # 类似 $ git branch 命令, 查看当前关联的远程地址名称.
        # 也是类似 $ git remote -v 命令.
 
@@ -353,6 +394,7 @@
      [] 通用匹配单个字符列表
 
  -------------------------------------------------------------------------------------
+ .gitignore
     bin/: 忽略当前路径下的bin文件夹,该文件夹下的所有内容都会被忽略,不忽略 bin 文件
     /bin: 忽略根目录下的bin文件
     /*.c: 忽略 cat.c,不忽略 build/cat.c
