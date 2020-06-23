@@ -1,6 +1,6 @@
 package multithread;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
